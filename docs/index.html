@@ -1,0 +1,2779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="css/slides-extended.css" />
+    <link rel="stylesheet" href="dist/theme/serif.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+    <link rel="stylesheet" href="plugin/reveal-pointer/pointer.css" />
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+    <script defer src="plugin/load-mathjax.js"></script>
+
+    <script type="text/javascript">
+        function pageInIframe() {
+            return (window.location !== window.parent.location);
+        }
+
+        let forgetPop = true;
+        function onPopState(event) {
+            if(forgetPop){
+                forgetPop = false;
+            } else if( pageInIframe()) {
+                parent.postMessage(event.target.location.href, "app://obsidian.md");
+            }
+        }
+        window.onpopstate = onPopState;
+        window.onmessage = event => {
+            if(event.data == "reload"){
+                window.document.location.reload();
+            }
+            forgetPop = true;
+        }
+
+        function fitElements() {
+            const itemsToFit = document.getElementsByClassName('fitText');
+            for (const item in itemsToFit) {
+                if (Object.hasOwnProperty.call(itemsToFit, item)) {
+                    const element = itemsToFit[item];
+                    fitElement(element, 1, 1000);
+                    element.classList.remove('fitText');
+                }
+            }
+        }
+
+        function fitElement(element, start, end) {
+
+            let size = (end + start) / 2;
+            element.style.fontSize = `${size}px`;
+
+            if (Math.abs(start - end) < 1) {
+                while (element.scrollHeight > element.offsetHeight) {
+                    size--;
+                    element.style.fontSize = `${size}px`;
+                }
+                return;
+            }
+
+            if (element.scrollHeight > element.offsetHeight) {
+                fitElement(element, start, size);
+            } else {
+                fitElement(element, size, end);
+            }
+        }
+
+        document.onreadystatechange = () => {
+            fitElements();
+            if (document.readyState === 'complete') {
+                if (pageInIframe() && window.location.href.indexOf("?export") != -1){
+                    parent.postMessage(event.target.location.href, "app://obsidian.md");
+                }
+                if (window.location.href.indexOf("print-pdf") != -1){
+                    let stateCheck = setInterval(() => {
+                        clearInterval(stateCheck);
+                        window.print();
+                    }, 250);
+                }
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+❮❮ Geo-Python
+
+--- 
+# 2025-05-27 EarthLab EDS seminar
+Date: 22.05.2025
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+## **Geodata science education at Finnish universities**: What we teach, how we do it, and what we have learned in the process
+
+<br></br>
+
+**David Whipp**, Department of Geosciences and Geography, University of Helsinki, Finland
+
+_with contributions from_
+
+**Henrikki Tenkanen** (Aalto University) and **Vuokko Heikinheimo** (Finnish Environment Institute)
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## A few things about the University of Helsinki
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+- **University of Helsinki**: Finland’s largest university (~31,000 students, ~4700 staff)
+
+- **Faculty of Science**: Largest of the university’s 11 faculties (~6000 students, ~1350 staff)
+
+- **Department of Geosciences and Geography**: 22 professors, 20+ other teaching staff, >60* postdocs and PhD students
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/physicum-winter-tall.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Photo: Jani Närhi
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+## A few things about Finns
+
+<div class="flex-even" style="position: absolute; left: 0%; top: 0%; height: 40%; width: 100%; display: flex; flex-direction: row; align-items: start; justify-content: space-evenly" align="bottom">
+
+<img src="Archive/Teaching 👨‍🏫/img/sauna.jpg" alt="" style="object-fit: scale-down">
+
+<img src="Archive/Teaching 👨‍🏫/img/lake.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="flex-even" style="position: absolute; left: 0%; top: 60%; height: 40%; width: 100%; display: flex; flex-direction: row; align-items: start; justify-content: space-evenly" align="bottom">
+
+<img src="Archive/Teaching 👨‍🏫/img/bus-stop.png" alt="" style="object-fit: scale-down">
+
+<img src="Archive/Teaching 👨‍🏫/img/bucket.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 50%; height: 20%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<p style="font-size: large;">
+https://www.reddit.com/r/Finland/comments/z0w2my/finns_waiting_for_the_bus_again/
+</p>
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Why am I here?
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+- I am currently on sabbatical visiting CU until June 17th<br></br>
+- I am hoping to connect with researchers and educators here to share ideas and help develop geodata science teaching *materials*, *methods*, and *learning environments*<br></br>
+- Please **ask questions** as they come up and **interrupt me as you like**
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/slides-qr-code.png" alt="" style="object-fit: scale-down">
+
+Copy or share these slides
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+</div>
+
+
+
+</div>
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+## Overview
+
+**Goal today**: Provide an overview of the courses and teaching approaches we have developed to provide a quantitative foundation for bachelor's and master's students in *geology* and *geography*
+
+**Topics** <!-- .element: class="fragment" data-fragment-index="1" -->
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->Learning goals and sources of inspiration
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->Courses we have developed
+- &shy;<!-- .element: class="fragment" data-fragment-index="3" -->Our learning tools and environment
+- &shy;<!-- .element: class="fragment" data-fragment-index="4" -->Lessons we have learned, challenges that persist
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+# Learning goals and sources of inspiration
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## The ideal scenario
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Our aim is to support our students in learning learn *essential computing skills* including:
+
+1. &shy;<!-- .element: class="fragment" data-fragment-index="1" -->Basic programming (in Python)
+1. &shy;<!-- .element: class="fragment" data-fragment-index="2" -->Good coding practices (e.g., using Git)
+1. &shy;<!-- .element: class="fragment" data-fragment-index="3" -->Batch processing
+1. &shy;<!-- .element: class="fragment" data-fragment-index="4" -->Modern tools used by data scientists (e.g., GitHub)
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F66.media.tumblr.com%2F75e78a6a35b2f4c53dedb22b6eacb2b2%2Ftumblr_n17v3ty2dp1sfgmmzo1_500.gif&f=1&nofb=1&ipt=0a36e8b151f39ededcaf4cadc001d0ce252cc41ea67893fa9f6e060a38ddfbbb" alt="" style="object-fit: scale-down">
+
+Vibing to computing goodness
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: [https://www.tumblr.com/](https://www.tumblr.com/)
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Sources of inspiration 
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Like many natural scientists, we are self-taught programmers
+
+This means that we only learned important skills for *open, reproducible science* rather late, including:
+
+- Version control
+- Unit testing
+- Good coding practices (e.g., PEP8)
+- Effective debugging
+
+[Software Carpentry](https://carpentries.org/) was an excellent, and inspiring resource for these topics
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/software-carpentry.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: Some [Software Carpentry](https://carpentries.org/lessons/) lessons
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Sources of inspiration 
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+The learning resources from GitHub have also proved to be excellent, especially since we utilize Git and GitHub in many of our courses
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/github-lessons.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Source: [https://docs.github.com/](https://docs.github.com/en/get-started/start-your-journey/git-and-github-learning-resources)
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Sources of inspiration 
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Essential textbooks have also been a valuable resource and example of how to approach teaching certain topics
+
+McKinney's book **Python for Data Analysis**, for example, provides an excellent overview of the **pandas** library, which is heavily used in our course materials
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://wesmckinney.com/book/images/cover.png" alt="" style="object-fit: scale-down">
+
+Wes McKinney's **pandas** book
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Source: https://wesmckinney.com/book/
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Sources of inspiration 
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+And of course, we try to keep up with what is happening in the broader educational community and with new developments in Python and other related tools we teach and use
+
+<br></br>
+
+This includes following what the education team here at Earth Lab has been working on 😄
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://earthlab.colorado.edu/sites/default/files/styles/square_med/public/media/image/Untitled%20design.png?itok=dOEdyAQ9" alt="" style="object-fit: scale-down">
+
+We've been watching you...
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://earthlab.colorado.edu/
+</div>
+
+
+
+</div>
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+# Courses we have developed
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Python for geo-people
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+**Python for geo-people** was our first Python-based course, where we:
+
+- Introduced students to the Python programming language
+- Developed basic programming skills
+- Introduced the use of Git and GitHub classroom
+
+**Target audience**: BSc and MSc students in *geology* and *geography*
+
+<br></br>
+
+Everything in this course was done using the Spyder IDE or a Python interpreter via remote desktop connections to cloud servers
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/python-for-geo-people.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Source: https://github.com/Python-for-geo-people/Course-information
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 20%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+## Geo-Python (and its evolution)
+</div>
+
+<div class="" style="position: absolute; left: 70%; top: 0%; height: 10%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+https://geo-python.github.io
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 100%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<img src="Archive/Teaching 👨‍🏫/img/python-for-geo-people.png" alt="" style="object-fit: scale-down">
+
+2016
+</div>
+
+<div class="" style="position: absolute; left: 35%; top: 0%; height: 100%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<img src="Archive/Teaching 👨‍🏫/img/geo-python-2017.png" alt="" style="object-fit: scale-down">
+
+2017
+</div>
+
+<div class="" style="position: absolute; left: 70%; top: 0%; height: 100%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<img src="Archive/Teaching 👨‍🏫/img/geo-python-2024.png" alt="" style="object-fit: scale-down">
+
+2024
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 85%; height: 15%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+**Geo-Python** is our current introductory Python programming course. In it we introduce Python, basic programming concepts, good programming practices, and modern tools for computational scientists
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Geo-Python
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+The **Geo-Python** course runs for 7 weeks, with 1 weekly 3-hour lecture period and 2 (*optional*) weekly exercise help sessions
+
+The course covers:
+
+- Python basics
+- Loops and conditional statements
+- Functions and script files
+- Data analysis with **pandas**
+- Data visualization
+
+Because the students are a mix of geologists and geographers, we use climate data for our example datasets
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://geo-python-site.readthedocs.io/en/latest/_images/yle-summer-2024.png" alt="" style="object-fit: scale-down">
+
+Example lesson motivation (https://yle.fi/a/74-20109657)
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Geo-Python website: https://geo-python.github.io
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Geo-Python
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Students are assessed using weekly computing / data analysis exercises (60% of course grade) and a final exercise (40% of course grade)
+
+<br></br>
+
+Students work with a partner on the weekly exercises, but the final exercise is done independently
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/temp-classifier-exercise.png" alt="" style="object-fit: scale-down">
+
+Example exercise problem
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Geo-Python
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+We also **record videos** of each lesson and post them on YouTube. About half of the students turn up in person.
+
+<br></br>
+
+The course enrollment is ~80–100 students each autumn, and our current teaching team comprises 2 instructors and 4 teaching assistants
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/geo-python-youtube.png" alt="" style="object-fit: scale-down">
+
+Geo-Python YouTube videos
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Geo-Python YouTube channel: http://www.youtube.com/@geo-python
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Automating GIS processes (II)
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+The **Automating GIS processes** (AutoGIS) course is the *geography* students' follow-up course to Geo-Python
+
+This course applies and broadens the students' Python skillset through lessons on:
+
+1. Shapely and geometry objects
+2. Managing spatial data with GeoPandas
+3. Geocoding and spatial queries
+4. Reclassifying data, overlay analysis
+5. Visualization: static and interactive maps
+6. OpenStreetMap data and network analysis
+7. Working with raster data
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://autogis-site.readthedocs.io/en/latest/_static/AutoGIS.PNG" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+AutoGIS website: https://autogis.github.io
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Automating GIS processes (II)
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+The AutoGIS learning environment is very similar to Geo-Python, and students also have weekly exercises and a final project
+
+We also record videos of course lessons and share them on YouTube
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/autogis-map.png" alt="" style="object-fit: scale-down">
+
+Interactive map of train/metro stations in Helsinki
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+AutoGIS YouTube channel: https://www.youtube.com/@AutomatingGISprocesses
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Introduction to Quantitative Geology
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+The **Introduction to Quantitative Geology** (IntroQG) course is the *geology* students' follow-up course to Geo-Python
+
+Course students develop their Python skills by studying:
+
+1. Basic geostatistics
+2. Comparing predictions to observations
+3. The diffusion equation
+4. The advection/wave equation
+5. Viscous flow equations
+6. Building a numerical model
+7. Quantitative thermochronology
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+\begin{align}
+A &= \frac{\sum{x^{2}} \sum{y} - \sum{x} \sum{xy}}{\Delta} \\\\
+B &= \frac{N \sum{xy} - \sum{x} \sum {y}}{\Delta} \\\\
+\Delta &= N \sum{x^{2}} - \left( \sum{x} \right)^{2}
+\end{align}
+Linear regression equations
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+IntroQG website: https://introqg.github.io
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Introduction to Quantitative Geology
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Again, the IntroQG learning environment and structure is similar to Geo-Python and AutoGIS
+
+<br></br>
+
+Students have weekly exercises, a final report, and shorter lesson videos are posted on YouTube (www.youtube.com/@introqg)
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="https://introqg-site.readthedocs.io/en/latest/_images/Allen_fig_4-12b.png" alt="" style="object-fit: scale-down">
+
+Viscous flow down an inclined plane
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Source: *Earth Surface Processes*, P. Allen, 1997.
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+## Other courses/sites
+
+We offer several courses with online content that might be of interest to you:
+<br></br>
+
+### Courses
+
+- **Introduction to Spatial Data Analysis** (https://introsda.readthedocs.io/en/latest/)
+- **Spatial Data Science for Sustainable Development** (http://sustainability-gis.readthedocs.io/)
+- **Spatial Data Science for Sustainable Mobility** (http://sumogis.readthedocs.io/)
+<br></br>
+
+### Sites
+
+- **Spatial Data Science with High Performance Computing** (http://geohpc.readthedocs.io/)
+- **Geospatial Challenge Camp** (http://challenge-camp.geoportti.fi/)
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+# Our learning tools and environment
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Learning tools
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+We use a variety of course learning tools that have been selected to be *complementary* and *in line with modern applications in academia and industry*
+<br></br>
+
+We don't expect every student to become a professional programmer, but introduce essential tools and concepts to help them better *understand* and *interact* with software developers
+<br></br>
+
+The number of tools can cause some confusion for the students at the start of the Geo-Python course, but they generally learn to use the different learning tools within a couple weeks
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://www.clipartbest.com/cliparts/nTB/Xgx/nTBXgxEkc.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://www.clipartbest.com/clipart-nTBXgxEkc
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Jupyter notebooks and JupyterLab
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Almost all of our course learning materials and exercises are based in **Jupyter Notebooks** using **JupyterLab**
+
+The combination of *rich text* for descriptive texts and *code cells* for programming is ideal not only for new programmers, but also for documenting data science workflows
+
+This is a big improvement over our earlier use of Python script files and the Spyder IDE
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/jupyterlab.png" alt="" style="object-fit: scale-down">
+
+A Jupyter Notebook in JupyterLab
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Noppe and Binder
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+One challenge with learning using Jupyter Notebooks is that a server is (generally) required to make the notebooks interactive
+<br></br>
+
+We are fortunate to have the Finnish CSC – IT Center for Science (https://csc.fi/en/), who provides the **Noppe platform** for hosting Jupyter Notebooks
+<br></br>
+
+Noppe allows teachers to create custom Python environments and offers persistent storage and shared storage for students/teachers
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://csc.fi/app/uploads/2024/01/CSC_2012_LOGO.png" alt="" style="object-fit: scale-down">
+
+CSC resources are free to use for all Finnish university students and researchers/teachers
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+More info on Noppe: https://research.csc.fi/service/noppe/
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Noppe and Binder
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+However, as we make all of our course learning materials freely available online, we also support the use of Binder for learners not affiliated with a Finnish university
+<br></br>
+
+**Binder** is a free cloud-computing service that can be used to make Jupyter Notebooks interactive
+<br></br>
+
+However, it *does not provide persistent storage*, and Binder resources can sometimes be *limiting with larger datasets*
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://mybinder.org/static/logo.svg" width=800>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+More info on Binder: https://mybinder.readthedocs.io/en/latest/index.html
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Git, GitHub, and GitHub Classroom
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+The Geo-Python course introduces **version control using Git**, as well as how to use GitHub and GitHub Classroom
+
+We introduce Git in order to support students learning the process of making *incremental* and *documented* changes to their programs
+
+This not only helps with *debugging their code*, but builds an understanding of Git to later help with *collaborative code development*
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://imgs.xkcd.com/comics/git_2x.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://xkcd.com/1597
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Git, GitHub, and GitHub Classroom
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+**GitHub** is used in our courses as the site where student exercises are cloned and stored
+
+Students learn how to *clone* their exercises, *push* changes, and *collaborate* using GitHub
+
+We use the **JupyterLab Git extension** so students can commit changes while working in JupyterLab
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/github-exercise.png" alt="" style="object-fit: scale-down">
+
+An exercise template copy (private)
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+More about JupyterLab Git: https://github.com/jupyterlab/jupyterlab-git
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Git, GitHub, and GitHub Classroom
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Finally, we use **GitHub Classroom** to distribute exercises to the students and manage their submissions
+<br></br>
+
+Templates of the exercise are created from which students can *make private copies* using exercise links on the course website
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/github-classroom.png" alt="" style="object-fit: scale-down">
+
+The Geo-Python 2024 GitHub Classroom
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Course communication
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+We encourage students to communicate with us and each other using team communication platforms
+
+Currently, we are using **Discord** for all class communication, where we suggest students chat with one another about course materials and exercises (except detailed solutions)
+
+Earlier we have used **Slack**
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/discord.png" alt="" style="object-fit: scale-down">
+
+The Geo-Python 2024 GitHub Classroom
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Course interaction
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+In the Geo-Python course we utilize **Presemo** for interactive questions during the lesson
+
+We normally start class with Presemo questions about the previous week's material on screen while students settle in (e.g., How did it go? Any issues?)
+
+Then we break up the lessons with occasional questions to pause and reflect while learning new material
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/presemo.png" alt="" style="object-fit: scale-down">
+
+An example Presemo poll question
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+More about Presemo: http://presemo.com/docs/userguide.en.html
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Course grading
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+We have been using **nbgrader** to create our exercises
+
+**nbgrader** makes it easy *create* student exercise templates from instructor master copies (that include solutions) and automatically or manually *grade* the problems
+
+*However...*
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="https://nbgrader.readthedocs.io/en/stable/_images/creating_assignment.gif" width=1600>
+The <b>nbgrader</b> instructor interface
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+More about **nbgrader**: https://nbgrader.readthedocs.io/
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Course grading
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+As we are using GitHub Classroom to distribute assignments, students *are not able to validate their solutions* to automatically graded problems
+
+We are in the process of migrating to using tests in **pytest**, which can be run automatically whenever students push changes to their exercises
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<img src="https://nbgrader.readthedocs.io/en/stable/_images/student_assignment.gif" width=1600>
+The <b>nbgrader</b> student interface
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+More about **nbgrader**: https://nbgrader.readthedocs.io/
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Teaching philosophy - LLMs OK
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Teaching basic programming skills in the time of **generative text tools** (based on large language models - LLMs) is challenging
+
+Yet, we want our students to know how to *write good prompts to produce code*
+
+Thus, we introduce how to generate code using ChatGPT and indicate places where the use of similar tools is OK with the text "LLMs OK"
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/chatgpt.png" alt="" style="object-fit: scale-down">
+
+The OpenAI logo
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://www.clipartbest.com/clipart-nTBXgxEkc
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Teaching philosophy - Pair programming
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+We also *pair students up* in the Geo-Python course to encourage them to learn together
+
+We use a pre-course survey to pair more experienced students with new programmers
+
+And following the pair programming philosophy, one student is the "*driver*" and the other "*navigates*"
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 36%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<p align="right">
+<img src="https://www.pngmart.com/files/13/Adventure-Time-Jake-And-Finn-Transparent-PNG.png"></p>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://www.pngmart.com/image/208129
+</div>
+
+
+
+</div>
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+# Lessons learned and ongoing challenges
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Lessons learned
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->Students **apply what they learn!**<br></br>
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->Students **like having a programming partner** (most of them, at least)!<br></br>
+- &shy;<!-- .element: class="fragment" data-fragment-index="3" -->It can be hard to find the correct balance between **challenging new programmers and still engaging more experienced students**
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fe8%2Fed%2Fba%2Fe8edbac9b244fb0524c5f0a23393d65a.png&f=1&nofb=1&ipt=15330524d63d373d7e1609c3a4257efa116bc4708754a805fc4d5e56cc3a67cd" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://www.vrogue.co/
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Ongoing challenges
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->We get regular requests for issuing certificates to students outside of Finnish universities, but **lack resources to assess exercises, etc.**<br></br>
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->Automated grading is super helpful, but designing good tests and providing feedback as students work **takes time** (see resource issue...)
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://www.pngmart.com/files/13/Adventure-Time-Lumpy-PNG-Photo.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://www.pngmart.com/image/207673
+</div>
+
+
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Ongoing challenges
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->Generative text tools *can be* great for helping students learn, but can also **interfere with them developing the skills to understand whether code they produce is sensible**<br></br>
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->Structured exercises are good for teachers to make sure students do tasks in a preferred order, and also good for automating grading. However, having **too much structure can limit student's ability to be creative and come up with their own approach to problem solving**.
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="https://www.pngmart.com/files/13/Adventure-Time-Lumpy-PNG-Photo.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Image: https://www.pngmart.com/image/207673
+</div>
+
+
+
+</div>
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+## Concluding remarks
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->ADD THESE!!!
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+## Acknowledgements
+
+### Current and former Geo-Python teachers
+
+Håvard Aagesen Christoph Fink, Kamyar Hasanzadeh, Yijun Wang
+<br></br>
+
+### Current and former course assistants
+
+<p align="left">
+Nino Chkhartishvili, Emil Ehnström, Antti Kallanranta, Mikko Kangasmaa, Sonja Koivisto, Sanni Laaksonen, Hertta Lehvävirta, Samuli Massinen, Oyelowo Oyedayo, Justus Poutanen, Aleksi Rantanen, Vili Rauhala, Sakari Sarjakoski, Aino Schulz, Jorina Schütt, Veeti Sihvola, Sara Todorovic, Leevi Tuikka, Bryan Vallejo, Annarosa Whitman, Lotta Ylä-Mella</p>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: start; justify-content: center" absolute="true">
+
+<div class="" style="padding: 80px 20px; box-sizing: border-box; position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+ <div class="block">
+
+## Thank you!
+</div>
+
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 15%; height: 80%; width: 60%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+Thanks for your attention, questions are welcome!
+<br></br>
+
+And as a last note, we're working on a textbook titled ***Introduction to Python for Geographic Data Analysis*** that is freely available online and about 75% complete (should be finished this year - hard copies will be available from CRC Press)
+<br></br>
+
+The book is a combination of the Geo-Python and Automating GIS processes courses, with a few additional case studies
+</div>
+
+
+
+</div>
+
+<div class="" style="position: absolute; left: 66%; top: 15%; height: 80%; width: 30%; display: flex; flex-direction: column; align-items: start; justify-content: space-evenly" align="right">
+
+
+<div class="block">
+
+<img src="Archive/Teaching 👨‍🏫/img/pythongis.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+.horizontal_dotted_line{
+  border-bottom: 2px dotted gray;
+} 
+} 
+</style>
+
+<div class="horizontal_dotted_line" style="position: absolute; left: 3%; top: 95%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+</div>
+
+<div class="" style="position: absolute; left: 3%; top: 99%; height: 0%; width: 94%; display: flex; flex-direction: column; align-items: start; justify-content: center" >
+
+<div class="block">
+
+Check out the book for free at https://pythongis.org
+</div>
+
+
+
+</div>
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/mermaid/mermaid.js"></script>
+    <script src="plugin/chart/chart.umd.js"></script>
+    <script src="plugin/chart/plugin.js"></script>
+    <script src="plugin/customcontrols/plugin.js"></script>
+    <script src="plugin/reveal-pointer/pointer.js"></script>
+
+    <script>
+        function extend() {
+            const target = {};
+            for (let i = 0; i < arguments.length; i++) {
+                const source = arguments[i];
+                for (const key in source) {
+                    if (source.hasOwnProperty(key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        }
+
+        function isLight(color) {
+            let hex = color.replace('#', '');
+
+            // convert #fff => #ffffff
+            if (hex.length == 3) {
+                hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+            }
+
+            const c_r = parseInt(hex.substr(0, 2), 16);
+            const c_g = parseInt(hex.substr(2, 2), 16);
+            const c_b = parseInt(hex.substr(4, 2), 16);
+            const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+            return brightness > 155;
+        }
+
+        const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+
+        if (isLight(bgColor)) {
+            document.body.classList.add('has-light-background');
+        } else {
+            document.body.classList.add('has-dark-background');
+        }
+
+        // default options to init reveal.js
+        const defaultOptions = {
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'default', // none/fade/slide/convex/concave/zoom
+            plugins: [
+                RevealMarkdown,
+                RevealHighlight,
+                RevealZoom,
+                RevealNotes,
+                RevealMath.MathJax3,
+                RevealMermaid,
+                RevealChart,
+                RevealCustomControls,
+                RevealPointer,
+            ],
+            allottedTime: 120 * 1000,
+            mathjax3: {
+                mathjax: 'plugin/math/mathjax/tex-chtml-full.js',
+            },
+            markdown: {
+                gfm: true,
+                mangle: false,
+                pedantic: false,
+                smartLists: false,
+                smartypants: false,
+            },
+            mermaid: {
+                theme: isLight ? 'default' : 'dark',
+            },
+            customcontrols: {
+                controls: [
+                ]
+            },
+        };
+
+        if ( pageInIframe() ) {
+            defaultOptions.scrollActivationWidth = 5;
+        }
+
+        // options from URL query string
+        const queryOptions = Reveal().getQueryHash() || {};
+
+        const options = extend(defaultOptions, {"controls":true,"progress":true,"slideNumber":true,"center":false,"transition":"slide","transitionSpeed":"default","width":1920,"height":1080,"margin":0.04}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+    <!-- created with Slides Extended reveal.html template -->
+</body>
+</html>
